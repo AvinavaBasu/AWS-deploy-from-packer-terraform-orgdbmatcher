@@ -1,0 +1,26 @@
+Content-Type: multipart/mixed; boundary="===============8513999099111401202=="
+MIME-Version: 1.0
+ 
+--===============8513999099111401202==
+Content-Type: text/cloud-config; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="cloudinit-cloudconfig.txt"
+ 
+#cloud-config
+ 
+system_info:
+  default_user:
+    name: ec2-user
+ 
+--===============8513999099111401202==
+Content-Type: text/x-shellscript; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="cloudinit-shellscript.txt"
+ 
+#!/bin/bash
+ 
+#usermod --login ec2-user centos
+ 
+--===============8513999099111401202==--

@@ -1,0 +1,61 @@
+{
+    "variables": {
+      "image_name": "orgdbmatcher-acceptance-image",
+      "instance_type": "t2.micro",
+      "region": "us-east-1",
+      "vpc_id": "vpc-044c1685751f4881c",
+      "subnet_id": "subnet-02aab15e52c2e9399",
+      "ssh_username": "ec2-user",
+      "user_data_file": "centos_default_user.mime"
+    },
+    "builders": [
+      {
+        "type": "amazon-ebs",
+        "source_ami_filter" : {
+          "filters": {
+              "name": "tio_base_centos7-*"
+          },
+          "owners": ["702267635140"],
+          "most_recent": true
+        },
+        "ami_name": "{{user `image_name`}}",
+        "instance_type": "{{user `instance_type`}}",
+        "region": "{{user `region`}}",
+        "ssh_username": "{{user `ssh_username`}}",
+        "vpc_id": "{{user `vpc_id`}}",
+        "subnet_id": "{{user `subnet_id`}}",
+        "ssh_pty": "true",
+        "user_data_file": "{{user `user_data_file`}}",
+        "launch_block_device_mappings": [
+            {
+               "device_name": "/dev/sda1",
+               "delete_on_termination": true,
+               "volume_size": 100
+            }
+          ]
+      }
+    ],
+      "provisioners": [
+      {
+        "type": "file",
+        "source": "./authorized_keys_orgdbmatcher_uat/orgdbmatcher_uat_public_key",
+        "destination": "/home/{{user `ssh_username`}}/.ssh/authorized_keys"
+      },
+      {
+        "type": "shell",
+        "script": "script.sh"
+      },
+      {
+        "type": "file",
+        "source": "./lib.zip",
+        "destination": "/tmp/lib.zip"
+      },
+        {
+          "type": "shell",
+          "inline": [
+            "unzip -o -q /tmp/lib.zip -d /opt/ant/lib"
+          ]
+        }
+    ]
+  }
+  
